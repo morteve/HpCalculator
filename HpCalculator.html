@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Båtmotorkalkulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #333;
+            word-wrap: break-word;
+        }
+        /* Responsiv design */
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.2em;
+            }
+            input, select, button {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+            h2 {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Båtmotorkalkulator</h1>
+        <label for="newMotor">Ny motor (hk):</label>
+        <input type="number" id="newMotor" placeholder="Skriv inn hk" required>
+        
+        <label for="oldMotor">Gammel motor (hk):</label>
+        <input type="number" id="oldMotor" placeholder="Skriv inn hk" required>
+        
+        <label for="oldSpeed">Hastighet gammel motor:</label>
+        <input type="number" id="oldSpeed" placeholder="Skriv inn hastighet" required>
+        
+        <label for="unit">Enhet:</label>
+        <select id="unit">
+            <option value="km/t">km/t</option>
+            <option value="knop">knop</option>
+        </select>
+        
+        <button onclick="calculateSpeed()">Beregn hastighet</button>
+        
+        <h2 id="result">Resultatet vises her</h2>
+    </div>
+
+    <script>
+        function calculateSpeed() {
+            const newMotor = parseFloat(document.getElementById("newMotor").value);
+            const oldMotor = parseFloat(document.getElementById("oldMotor").value);
+            let oldSpeed = parseFloat(document.getElementById("oldSpeed").value);
+            const unit = document.getElementById("unit").value;
+            
+            if (!newMotor || !oldMotor || !oldSpeed || oldMotor === 0) {
+                document.getElementById("result").innerText = "Vennligst fyll inn alle felt med gyldige verdier.";
+                return;
+            }
+            
+            // Hvis enheten er "knop", konverter gammel hastighet til km/t
+            if (unit === "knop") {
+                oldSpeed *= 1.852; // 1 knop = 1.852 km/t
+            }
+
+            // Beregn ny hastighet i km/t
+            let newSpeed = Math.sqrt(newMotor / oldMotor) * oldSpeed;
+            
+            // Hvis enheten er "knop", konverter ny hastighet tilbake til knop
+            if (unit === "knop") {
+                newSpeed /= 1.852; // Konverter km/t tilbake til knop
+            }
+
+            // Vis resultat
+            document.getElementById("result").innerText = 
+                `Ny hastighet: ${newSpeed.toFixed(2)} ${unit}`;
+        }
+    </script>
+</body>
+</html>
